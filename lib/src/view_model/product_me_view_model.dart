@@ -11,7 +11,14 @@ class ProductMeNotifier extends ChangeNotifier with FiniteState, ErrorMessage {
   final _productService = ProductService();
   final _sharedService = SharedService();
 
+  bool isSomethingChange = false;
+
   Iterable<Product> products = [];
+
+  void setSomethingChange(bool value) {
+    isSomethingChange = value;
+    notifyListeners();
+  }
 
   Future<void> getProductsByUserId() async {
     final userId = await _sharedService.getUserId();
@@ -25,6 +32,26 @@ class ProductMeNotifier extends ChangeNotifier with FiniteState, ErrorMessage {
       setState(StateAction.idle);
     } on PostgrestException {
       setState(StateAction.error);
+      rethrow;
+    }
+  }
+
+  Future<void> markSoldProduct(Product product) async {
+    final updatedProduct = product;
+    updatedProduct.isSold = true;
+    try {
+      await _productService.updateProduct(updatedProduct);
+      getProductsByUserId();
+    } on PostgrestException {
+      rethrow;
+    }
+  }
+
+  Future<void> removeProduct(Product product) async {
+    try {
+      await _productService.removeProduct(product);
+      getProductsByUserId();
+    } on PostgrestException {
       rethrow;
     }
   }

@@ -21,7 +21,7 @@ class Util {
 
   static String dateFormatterFull(int createdAt) {
     final date = DateTime.fromMillisecondsSinceEpoch(createdAt);
-    return DateFormat.Hms().addPattern(' - ').add_yMMMMEEEEd().format(date);
+    return DateFormat.jms().addPattern(' - ').add_yMMMMEEEEd().format(date);
   }
 
   static void showToastSuccess(String message) {

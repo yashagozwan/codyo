@@ -7,6 +7,8 @@ class TextPro extends StatelessWidget {
   final FontWeight? fontWeight;
   final TextAlign? textAlign;
   final double? height;
+  final int? maxLines;
+  final TextOverflow? textOverflow;
 
   const TextPro(
     this.data, {
@@ -16,6 +18,8 @@ class TextPro extends StatelessWidget {
     this.fontWeight,
     this.textAlign,
     this.height,
+    this.maxLines,
+    this.textOverflow,
   });
 
   @override
@@ -23,6 +27,7 @@ class TextPro extends StatelessWidget {
     return Text(
       data,
       textAlign: textAlign,
+      maxLines: maxLines,
       style: TextStyle(
         color: color,
         fontWeight: fontWeight,

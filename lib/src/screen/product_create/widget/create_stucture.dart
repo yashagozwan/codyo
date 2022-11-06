@@ -159,15 +159,16 @@ class _CreateStructureState extends ConsumerState<CreateStructure> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(16),
+                        Container(
+                          padding: const EdgeInsets.all(14),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               TextPro(
                                 viewModel.title,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 18,
+                                fontSize: 16,
                               ),
                               const SizedBox(height: 8),
                               Text(
@@ -179,7 +180,7 @@ class _CreateStructureState extends ConsumerState<CreateStructure> {
                               const SizedBox(height: 8),
                               TextPro(
                                 Util.currencyFormatter(viewModel.price),
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
                             ],

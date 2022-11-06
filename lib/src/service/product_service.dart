@@ -107,14 +107,28 @@ class ProductService {
     }
   }
 
-  Future<void> updateProduct() async {
-    try {} on PostgrestException {
+  Future<void> updateProduct(Product product) async {
+    try {
+      final result = await supabase
+          .from(_productsTable)
+          .update(product.toPostgres())
+          .eq('id', product.id);
+
+      print(result.runtimeType);
+      print(result);
+    } on PostgrestException {
       rethrow;
     }
   }
 
-  Future<void> removeProduct(int id) async {
-    try {} on PostgrestException {
+  Future<void> removeProduct(Product product) async {
+    try {
+      final result =
+          await supabase.from(_productsTable).delete().eq('id', product.id);
+
+      print(result.runtimeType);
+      print(result);
+    } on PostgrestException {
       rethrow;
     }
   }
