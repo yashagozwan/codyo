@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:codyo/src/model/product_model.dart';
 import 'package:codyo/src/model/user_model.dart';

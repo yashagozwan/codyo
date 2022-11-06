@@ -111,11 +111,8 @@ class ProductService {
     try {
       final result = await supabase
           .from(_productsTable)
-          .update(product.toPostgres())
+          .update(product.toPostgresUpdate())
           .eq('id', product.id);
-
-      print(result.runtimeType);
-      print(result);
     } on PostgrestException {
       rethrow;
     }
@@ -125,9 +122,6 @@ class ProductService {
     try {
       final result =
           await supabase.from(_productsTable).delete().eq('id', product.id);
-
-      print(result.runtimeType);
-      print(result);
     } on PostgrestException {
       rethrow;
     }

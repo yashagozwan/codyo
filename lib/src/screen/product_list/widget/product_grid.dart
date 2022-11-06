@@ -74,6 +74,8 @@ class _ProductGridState extends ConsumerState<ProductGrid> {
                               product.title,
                               fontWeight: FontWeight.w600,
                               color: Colors.black54,
+                              maxLines: 1,
+                              textOverflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 4),
                             Text(

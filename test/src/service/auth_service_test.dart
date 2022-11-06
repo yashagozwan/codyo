@@ -2,7 +2,6 @@ import 'package:codyo/src/exception/auth_exception.dart';
 import 'package:codyo/src/model/sign_in_model.dart';
 import 'package:codyo/src/model/user_model.dart';
 import 'package:codyo/src/service/auth_service.dart';
-import 'package:codyo/src/util/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';

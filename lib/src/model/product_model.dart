@@ -51,4 +51,18 @@ class Product {
       'userId': userId,
     };
   }
+
+  Map<String, dynamic> toPostgresUpdate() {
+    return {
+      'imageUrl': imageUrl,
+      'title': title,
+      'description': description,
+      'price': price,
+      'isSold': isSold,
+      'latitude': latitude,
+      'longitude': longitude,
+      'createdAt': createdAt,
+      'userId': userId,
+    };
+  }
 }

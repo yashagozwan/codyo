@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:codyo/src/model/product_model.dart';
 import 'package:codyo/src/screen/home/home_screen.dart';
+import 'package:codyo/src/screen/product_detail/product_detail_screen.dart';
 import 'package:codyo/src/screen/product_update/product_update_screen.dart';
 import 'package:codyo/src/util/finite_state.dart';
 import 'package:codyo/src/util/screen_route.dart';
@@ -146,53 +147,63 @@ class _ProductMeScreenState extends ConsumerState<ProductMeScreen> {
                   color: Colors.white,
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(14),
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: CachedNetworkImage(
-                        imageUrl: product.imageUrl,
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
-                      ),
+              GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  ScreenRoute(
+                    screen: ProductDetailScreen(
+                      product: product,
                     ),
-                    const SizedBox(width: 12),
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextPro(
-                            Util.currencyFormatter(product.price),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black54,
-                          ),
-                          const SizedBox(height: 8),
-                          TextPro(
-                            product.title,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            maxLines: 1,
-                            textOverflow: TextOverflow.ellipsis,
-                            color: Colors.black54,
-                          ),
-                          const SizedBox(height: 4),
-                          TextPro(
-                            product.description,
-                            maxLines: 2,
-                            textOverflow: TextOverflow.ellipsis,
-                            height: 1.2,
-                            color: Colors.black54,
-                          ),
-                        ],
+                  ),
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: CachedNetworkImage(
+                          imageUrl: product.imageUrl,
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 12),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextPro(
+                              Util.currencyFormatter(product.price),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black54,
+                            ),
+                            const SizedBox(height: 8),
+                            TextPro(
+                              product.title,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              maxLines: 1,
+                              textOverflow: TextOverflow.ellipsis,
+                              color: Colors.black54,
+                            ),
+                            const SizedBox(height: 4),
+                            TextPro(
+                              product.description,
+                              maxLines: 2,
+                              textOverflow: TextOverflow.ellipsis,
+                              height: 1.2,
+                              color: Colors.black54,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const Divider(
