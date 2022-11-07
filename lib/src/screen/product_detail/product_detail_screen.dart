@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:codyo/src/model/product_model.dart';
 import 'package:codyo/src/model/user_model.dart';
+import 'package:codyo/src/util/finite_state.dart';
 import 'package:codyo/src/util/util.dart';
 import 'package:codyo/src/view_model/product_detail_view_model.dart';
+import 'package:codyo/src/view_model/product_favorite_view_model.dart';
 import 'package:codyo/src/widget/text_pro.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -27,14 +29,18 @@ class ProductDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
-  late Product product;
+  late Product _product;
 
   Future<void> _initial() async {
-    product = widget.product;
+    _product = widget.product;
 
     Future(() async {
       final viewModel = ref.read(productDetailViewModel);
-      viewModel.getUserById(product.userId);
+      viewModel.getUserById(_product.userId);
+
+      final favoriteViewModel = ref.read(productFavoriteViewModel);
+      favoriteViewModel.checkFavoriteSaveable(_product.id);
+      favoriteViewModel.getUserId();
     });
   }
 
@@ -171,7 +177,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         ClipRRect(
           borderRadius: BorderRadius.circular(14),
           child: CachedNetworkImage(
-            imageUrl: product.imageUrl,
+            imageUrl: _product.imageUrl,
             width: MediaQuery.of(context).size.width,
             height: 400,
             fit: BoxFit.cover,
@@ -179,30 +185,84 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         ),
         Align(
           alignment: Alignment.topRight,
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: SizedBox(
-              width: 60,
-              height: 60,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black12,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+          child: _showButtonFavorite(),
+        ),
+      ],
+    );
+  }
+
+  Widget _showButtonFavorite() {
+    return Consumer(
+      builder: (context, ref, child) {
+        final viewModelWatcher = ref.watch(productFavoriteViewModel);
+        final isSaveable = viewModelWatcher.isSaveable;
+
+        if (viewModelWatcher.userId == _product.userId) {
+          return const SizedBox.shrink();
+        }
+
+        void saveToFavorite() async {
+          if (!isSaveable) {
+            viewModelWatcher.removeFavoriteByProductIdAndByUserId(_product.id);
+            Util.showToastError('Removed in favorites');
+          }
+
+          final result = await viewModelWatcher.createFavorite(_product.id);
+          if (result) Util.showToastSuccess('Saved in favorites');
+        }
+
+        Widget getAnimateIcon() {
+          if (isSaveable) {
+            return Transform.scale(
+              scale: 1.3,
+              child: Lottie.asset('asset/lottie/favorite_v1.json'),
+            );
+          }
+
+          return Transform.scale(
+            scale: 0.8,
+            child: Lottie.asset('asset/lottie/success.json'),
+          );
+        }
+
+        switch (viewModelWatcher.stateAction) {
+          case StateAction.idle:
+            return Padding(
+              padding: const EdgeInsets.all(8),
+              child: SizedBox(
+                width: 60,
+                height: 60,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black12,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    padding: const EdgeInsets.all(0),
                   ),
-                  padding: const EdgeInsets.all(0),
-                ),
-                onPressed: () {},
-                child: Transform.scale(
-                  scale: 1.3,
-                  child: Lottie.asset('asset/lottie/favorite_v1.json'),
+                  onPressed: saveToFavorite,
+                  child: getAnimateIcon(),
                 ),
               ),
-            ),
-          ),
-        )
-      ],
+            );
+          case StateAction.loading:
+            return Container(
+              width: 60,
+              height: 60,
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: const CircularProgressIndicator(),
+            );
+
+          case StateAction.error:
+            return const SizedBox.shrink();
+        }
+      },
     );
   }
 
@@ -224,7 +284,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           ),
           const Divider(),
           TextPro(
-            Util.currencyFormatter(product.price),
+            Util.currencyFormatter(_product.price),
             fontWeight: FontWeight.w400,
             fontSize: 18,
             color: Colors.black54,
@@ -245,7 +305,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextPro(
-            product.title,
+            _product.title,
             fontWeight: FontWeight.w400,
             fontSize: 20,
             color: Colors.black54,
@@ -259,7 +319,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           ),
           const SizedBox(height: 4),
           TextPro(
-            product.description,
+            _product.description,
             fontWeight: FontWeight.w300,
             height: 1.5,
           ),
@@ -271,7 +331,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             color: Colors.black54,
           ),
           TextPro(
-            Util.dateFormatterFull(product.createdAt),
+            Util.dateFormatterFull(_product.createdAt),
             fontWeight: FontWeight.w300,
             height: 1.5,
           ),
@@ -357,31 +417,31 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               child: GoogleMap(
                 zoomControlsEnabled: false,
                 initialCameraPosition: CameraPosition(
-                  target: LatLng(product.latitude, product.longitude),
+                  target: LatLng(_product.latitude, _product.longitude),
                   zoom: 17,
                 ),
                 markers: {
                   Marker(
                     markerId: MarkerId(
-                      product.id.toString(),
+                      _product.id.toString(),
                     ),
                     position: LatLng(
-                      product.latitude,
-                      product.longitude,
+                      _product.latitude,
+                      _product.longitude,
                     ),
                     infoWindow: InfoWindow(
-                      title: product.title,
+                      title: _product.title,
                     ),
                   ),
                 },
                 circles: {
                   Circle(
                     circleId: CircleId(
-                      product.id.toString(),
+                      _product.id.toString(),
                     ),
                     center: LatLng(
-                      product.latitude,
-                      product.longitude,
+                      _product.latitude,
+                      _product.longitude,
                     ),
                     fillColor: Colors.blue.shade200.withOpacity(0.3),
                     radius: 100,
@@ -451,7 +511,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 const countryCode = '+62';
                 final phone = countryCode + user.phone.substring(0);
                 final whatsAppUrl =
-                    'whatsapp://send?phone=$phone&text=Saya minat ${product.title} nya.';
+                    'whatsapp://send?phone=$phone&text=Saya minat ${_product.title} nya.';
                 launchUrl(Uri.parse(whatsAppUrl));
               },
               child: const Text('Yes'),

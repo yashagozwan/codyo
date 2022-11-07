@@ -6,6 +6,7 @@ import 'package:codyo/src/screen/profile/widget/box_info_product.dart';
 import 'package:codyo/src/screen/sign_in/sign_in_screen.dart';
 import 'package:codyo/src/util/screen_route.dart';
 import 'package:codyo/src/util/util.dart';
+import 'package:codyo/src/view_model/home_view_model.dart';
 import 'package:codyo/src/view_model/profile_view_model.dart';
 import 'package:codyo/src/widget/elevated_button_pro.dart';
 import 'package:codyo/src/widget/text_pro.dart';
@@ -270,6 +271,8 @@ class _BuildProfileState extends ConsumerState<BuildProfile> {
                                 screen: const SignInScreen(),
                               ),
                             );
+
+                            ref.read(homeViewModel).setSelectedIndex(0);
                           }
                         },
                         child: const TextPro('Yes'),

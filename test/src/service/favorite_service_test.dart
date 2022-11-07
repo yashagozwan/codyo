@@ -47,10 +47,19 @@ void main() {
       }
     });
 
+    test('Check Favorite Saveable', () async {
+      const userId = 11;
+      const productId = 11;
+      final result =
+          await favoriteService.checkFavoriteSaveable(productId, userId);
+      debugPrint(result.toString());
+    });
+
     test('Remove Favorite', () async {
       try {
         final favorite = Favorite(id: 1, productId: 12, userId: 11);
-        final result = await favoriteService.removeProductFavorite(favorite);
+        final result =
+            await favoriteService.removeProductFavoriteById(favorite.id);
         expect(result, true);
       } on PostgrestException catch (e) {
         expect(

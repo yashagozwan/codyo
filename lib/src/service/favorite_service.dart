@@ -53,6 +53,22 @@ class FavoriteService {
     }
   }
 
+  Future<bool> checkFavoriteSaveable(int productId, int userId) async {
+    try {
+      final fetchProducts = await getFavoriteProductsByUserId(userId);
+      final products =
+          fetchProducts.where((product) => product.id == productId);
+
+      if (products.isNotEmpty) {
+        return false;
+      }
+
+      return true;
+    } on PostgrestException {
+      rethrow;
+    }
+  }
+
   Future<Iterable<Favorite>> _getFavoriteByUserId(int userId) async {
     try {
       final favorites = await supabase
@@ -66,8 +82,27 @@ class FavoriteService {
     }
   }
 
-  Future<bool> removeProductFavorite(Favorite favorite) async {
+  Future<bool> removeProductFavoriteById(int favoriteId) async {
     try {
+      await supabase
+          .from(_favoriteTable)
+          .delete()
+          .eq('id', favoriteId)
+          .single();
+
+      return true;
+    } on PostgrestException {
+      rethrow;
+    }
+  }
+
+  Future<bool> removeFavoriteByProductIdAndByUserId(
+    int productId,
+    int userId,
+  ) async {
+    try {
+      final favorites = await _getFavoriteByUserId(userId);
+      final favorite = favorites.firstWhere((e) => e.productId == productId);
       await supabase
           .from(_favoriteTable)
           .delete()
