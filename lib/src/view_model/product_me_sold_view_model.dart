@@ -11,6 +11,12 @@ class ProductMeSoldViewModel extends ChangeNotifier with FiniteState {
   final _sharedService = SharedService();
 
   Iterable<Product> products = [];
+  bool isSomethingChange = false;
+
+  void setSomethingChange(bool value) {
+    isSomethingChange = value;
+    notifyListeners();
+  }
 
   Future<void> getSoldProductByUserId() async {
     final userId = await _sharedService.getUserId();
@@ -25,6 +31,15 @@ class ProductMeSoldViewModel extends ChangeNotifier with FiniteState {
       setState(StateAction.idle);
     } on PostgrestException {
       setState(StateAction.error);
+      rethrow;
+    }
+  }
+
+  Future<void> removeProduct(Product product) async {
+    try {
+      await _productService.removeProduct(product);
+      getSoldProductByUserId();
+    } on PostgrestException {
       rethrow;
     }
   }

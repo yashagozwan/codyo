@@ -21,6 +21,7 @@ class _ProductFavoriteScreenState extends ConsumerState<ProductFavoriteScreen> {
         titleTextStyle: const TextStyle(
           color: Colors.black54,
           fontWeight: FontWeight.w600,
+          fontSize: 18,
         ),
         title: const TextPro('Favorite'),
         elevation: 0.5,

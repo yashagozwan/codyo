@@ -28,6 +28,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         titleTextStyle: const TextStyle(
           color: Colors.black54,
           fontWeight: FontWeight.w600,
+          fontSize: 18,
         ),
         title: const TextPro('Profile'),
         elevation: 0.5,

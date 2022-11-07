@@ -65,6 +65,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         titleTextStyle: const TextStyle(
           color: Colors.black54,
           fontWeight: FontWeight.w600,
+          fontSize: 18,
         ),
       ),
       body: SingleChildScrollView(

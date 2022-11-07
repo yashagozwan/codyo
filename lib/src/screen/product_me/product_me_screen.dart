@@ -8,6 +8,7 @@ import 'package:codyo/src/util/screen_route.dart';
 import 'package:codyo/src/util/util.dart';
 import 'package:codyo/src/view_model/product_me_view_model.dart';
 import 'package:codyo/src/widget/cool_loading.dart';
+import 'package:codyo/src/widget/empty_product.dart';
 import 'package:codyo/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -113,6 +114,10 @@ class _ProductMeScreenState extends ConsumerState<ProductMeScreen> {
   }
 
   Widget _buildProductList(Iterable<Product> products) {
+    if (products.isEmpty) {
+      return const EmptyProduct();
+    }
+
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.all(16),

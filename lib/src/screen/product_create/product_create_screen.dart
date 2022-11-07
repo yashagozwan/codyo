@@ -26,6 +26,7 @@ class _ProductCreateScreenState extends ConsumerState<ProductCreateScreen> {
         titleTextStyle: const TextStyle(
           color: Colors.black54,
           fontWeight: FontWeight.bold,
+          fontSize: 18,
         ),
         title: const TextPro('Let\'s sell something'),
         elevation: 0.5,
