@@ -28,8 +28,12 @@ class FavoriteService {
 
   Future<Product?> _getProductById(int id) async {
     try {
-      final product =
-          await supabase.from(_productsTable).select().eq('id', id).single();
+      final product = await supabase
+          .from(_productsTable)
+          .select()
+          .eq('id', id)
+          .filter('isSold', 'eq', false)
+          .single();
       return Product.fromMap(product);
     } on PostgrestException {
       return null;

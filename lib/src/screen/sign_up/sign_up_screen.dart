@@ -46,16 +46,19 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 SvgPicture.asset(
                   'asset/svg/sign_up.svg',
                   height: 200,
+                  key: const Key('sign_up_illustration'),
                 ),
                 const SizedBox(
                   height: 32,
                 ),
                 const TextPro(
                   'Please Sign Up for continue',
+                  key: Key('sign_up_title'),
                   color: Colors.black54,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
+                  key: const Key('sign_up_text_form_field_name'),
                   controller: _name,
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
@@ -74,6 +77,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
+                  key: const Key('sign_up_text_form_field_email'),
                   controller: _email,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
@@ -92,6 +96,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
+                  key: const Key('sign_up_text_form_field_phone'),
                   controller: _phone,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
@@ -110,6 +115,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
+                  key: const Key('sign_up_text_form_field_password'),
                   controller: _password,
                   keyboardType: TextInputType.text,
                   obscureText: true,
@@ -135,6 +141,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 Consumer(
                   builder: (context, ref, child) {
                     final button = ElevatedButtonPro(
+                      key: const Key('sign_up_button'),
                       onPressed: () async {
                         final isValid = _formKey.currentState!.validate();
                         if (!isValid) return;
@@ -186,8 +193,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const TextPro("Already have account? "),
+                    const TextPro(
+                      "Already have account? ",
+                      key: Key('sign_in_text'),
+                    ),
                     GestureDetector(
+                      key: const Key('sign_in_text_button'),
                       onTap: () {
                         Navigator.pop(context);
                         ref.read(signUpViewModel).cleaning();

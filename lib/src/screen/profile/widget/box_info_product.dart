@@ -27,7 +27,7 @@ class BoxInfoProduct extends StatelessWidget {
             color: Colors.white,
             border: Border.all(
               width: 1,
-              color: Colors.grey.shade200,
+              color: Colors.grey.shade300,
             ),
             borderRadius: BorderRadius.circular(14),
           ),

@@ -17,7 +17,7 @@ class EmptyProduct extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(14),
           ),
           child: Lottie.asset(

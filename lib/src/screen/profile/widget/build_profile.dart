@@ -304,6 +304,7 @@ class _BuildProfileState extends ConsumerState<BuildProfile> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
+              color: Colors.white,
               border: Border.all(
                 color: Colors.grey.shade300,
               ),

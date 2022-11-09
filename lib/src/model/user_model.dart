@@ -43,6 +43,15 @@ class User {
     };
   }
 
+  Map<String, dynamic> toPostgresUpdate() {
+    return {
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'avatarUrl': avatarUrl,
+    };
+  }
+
   @override
   String toString() {
     return 'User(id:$id, avatarUrl:$avatarUrl, name:$name, email:$email, phone:$phone, password:$password, createdAt:$createdAt)';

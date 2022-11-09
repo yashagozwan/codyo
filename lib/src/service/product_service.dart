@@ -109,7 +109,7 @@ class ProductService {
 
   Future<void> updateProduct(Product product) async {
     try {
-      final result = await supabase
+      await supabase
           .from(_productsTable)
           .update(product.toPostgresUpdate())
           .eq('id', product.id);
@@ -120,8 +120,7 @@ class ProductService {
 
   Future<void> removeProduct(Product product) async {
     try {
-      final result =
-          await supabase.from(_productsTable).delete().eq('id', product.id);
+      await supabase.from(_productsTable).delete().eq('id', product.id);
     } on PostgrestException {
       rethrow;
     }

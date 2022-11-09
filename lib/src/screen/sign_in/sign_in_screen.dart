@@ -44,15 +44,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               children: [
                 SvgPicture.asset(
                   'asset/svg/sign_in.svg',
+                  key: const Key('sign_in_illustration'),
                   height: 200,
                 ),
                 const SizedBox(height: 32),
                 const TextPro(
                   'Please Sign In to your account',
                   color: Colors.black54,
+                  key: Key('title_sign_in'),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
+                  key: const Key('text_form_field_email'),
                   controller: _email,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
@@ -75,6 +80,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
+                  key: const Key('text_form_field_password'),
                   controller: _password,
                   keyboardType: TextInputType.text,
                   obscureText: true,
@@ -98,6 +104,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     final viewModel = ref.watch(signInViewModel);
 
                     final button = ElevatedButtonPro(
+                      key: const Key('button_sign_in'),
                       onPressed: () async {
                         final isValid = _formKey.currentState!.validate();
                         if (!isValid) return;
@@ -149,8 +156,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const TextPro("Don't have account? "),
+                    const TextPro(
+                      "Don't have account? ",
+                      key: Key('text_sign_up'),
+                    ),
                     GestureDetector(
+                      key: const Key('button_sign_up'),
                       onTap: () {
                         Navigator.push(
                           context,

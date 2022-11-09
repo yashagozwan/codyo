@@ -69,11 +69,13 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
                 'asset/svg/logos.svg',
                 width: 40,
                 height: 40,
+                key: const Key('logo_app'),
               ),
             );
           },
         ),
         title: TextField(
+          key: const Key('product_list_text_field_search'),
           controller: _search,
           textInputAction: TextInputAction.search,
           onSubmitted: (value) {
@@ -111,7 +113,9 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
           switch (viewModel.stateAction) {
             case StateAction.idle:
               if (viewModel.products.isEmpty) {
-                return const ProductEmpty();
+                return const ProductEmpty(
+                  key: Key('product_list_product_empty'),
+                );
               }
 
               return ListView(

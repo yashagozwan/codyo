@@ -75,7 +75,7 @@ class ProductFavoriteNotifier extends ChangeNotifier
       final result = await _favoriteService.createFavorite(favorite, userId);
       checkFavoriteSaveable(productId);
       return result;
-    } on FavoriteException catch (e) {
+    } on FavoriteException {
       setErrorMessage('Item already saved');
       return false;
     } on PostgrestException {

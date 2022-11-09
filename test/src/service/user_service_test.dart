@@ -22,6 +22,7 @@ void main() {
       try {
         const userId = 3;
         final result = await userService.getUserById(userId);
+        debugPrint(result.toString());
       } on PostgrestException catch (e) {
         debugPrint(e.message);
       }

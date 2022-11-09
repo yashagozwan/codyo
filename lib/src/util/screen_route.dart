@@ -14,7 +14,7 @@ class ScreenRoute<T> extends PageRouteBuilder {
           transitionsBuilder: (_, animation, __, child) {
             return SlideTransition(
               position: Tween<Offset>(
-                begin: const Offset(1.0, 0),
+                begin: const Offset(1.0, 0.0),
                 end: const Offset(0.0, 0.0),
               ).animate(CurvedAnimation(parent: animation, curve: Curves.ease)),
               child: child,

@@ -22,6 +22,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         leading: Lottie.asset('asset/lottie/user_v2.json'),
         iconTheme: const IconThemeData(color: Colors.black54),

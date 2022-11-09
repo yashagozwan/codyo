@@ -37,7 +37,10 @@ class UserService {
 
   Future<void> updateUser(User user) async {
     try {
-      await supabase.from('users').update(user.toPostgres()).eq('id', user.id);
+      await supabase
+          .from('users')
+          .update(user.toPostgresUpdate())
+          .eq('id', user.id);
     } on PostgrestException {
       rethrow;
     }

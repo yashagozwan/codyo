@@ -1,8 +1,6 @@
-import 'package:codyo/src/constant/constant.dart';
 import 'package:codyo/src/exception/favorite_exeption.dart';
 import 'package:codyo/src/model/favorite_model.dart';
 import 'package:codyo/src/service/favorite_service.dart';
-import 'package:codyo/src/service/product_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
