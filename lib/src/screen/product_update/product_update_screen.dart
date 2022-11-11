@@ -14,7 +14,9 @@ import 'package:codyo/src/widget/text_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 
 class ProductUpdateScreen extends ConsumerStatefulWidget {
   final Product product;
@@ -40,8 +42,7 @@ class _ProductUpdateScreenState extends ConsumerState<ProductUpdateScreen> {
   Future<void> _initial() async {
     final viewModel = ref.read(productUpdateViewModel);
     _product = widget.product;
-
-    _price.text = _product.price.toString();
+    _price.text = '${_product.price}';
     _title.text = _product.title;
     _description.text = _product.description;
 
@@ -247,6 +248,15 @@ class _ProductUpdateScreenState extends ConsumerState<ProductUpdateScreen> {
                     border: InputBorder.none,
                     prefixText: 'Rp ',
                   ),
+                  inputFormatters: [
+                    ThousandsFormatter(
+                      formatter: NumberFormat.currency(
+                        decimalDigits: 0,
+                        locale: 'id',
+                        symbol: '',
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -396,7 +406,7 @@ class _ProductUpdateScreenState extends ConsumerState<ProductUpdateScreen> {
                     ),
                   ),
                   onPressed: () async {
-                    _product.price = int.parse(_price.text);
+                    _product.price = int.parse(_price.text.replaceAll('.', ''));
                     _product.title = _title.text;
                     _product.description = _description.text;
                     await viewModelWatcher.updateProduct(_product);

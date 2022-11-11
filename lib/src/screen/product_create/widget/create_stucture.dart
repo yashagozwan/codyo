@@ -9,9 +9,12 @@ import 'package:codyo/src/view_model/product_create_view_model.dart';
 import 'package:codyo/src/widget/text_pro.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 import 'choose_image_resource.dart';
 
 class CreateStructure extends ConsumerStatefulWidget {
@@ -225,7 +228,7 @@ class _CreateStructureState extends ConsumerState<CreateStructure> {
                     final product = Product(
                       title: _title.text,
                       description: _description.text,
-                      price: int.parse(_price.text),
+                      price: viewModel.price,
                       latitude: _position.latitude,
                       longitude: _position.longitude,
                     );
@@ -293,7 +296,17 @@ class _CreateStructureState extends ConsumerState<CreateStructure> {
                   controller: _price,
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
-                    ref.read(productCreateViewModel).setPrice(int.parse(value));
+                    var current = '';
+
+                    if (value.isEmpty) {
+                      current = '0';
+                    } else {
+                      current = value.replaceAll('.', '');
+                    }
+
+                    ref
+                        .read(productCreateViewModel)
+                        .setPrice(int.parse(current));
                   },
                   decoration: const InputDecoration(
                     isDense: true,
@@ -301,6 +314,15 @@ class _CreateStructureState extends ConsumerState<CreateStructure> {
                     border: InputBorder.none,
                     prefixText: 'Rp ',
                   ),
+                  inputFormatters: [
+                    ThousandsFormatter(
+                      formatter: NumberFormat.currency(
+                        decimalDigits: 0,
+                        locale: 'id',
+                        symbol: '',
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
